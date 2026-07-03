@@ -6,7 +6,7 @@
  * through Use Case 1 to Use Case 12.
  *
  * Current Implementation:
- * Use Case 4 - Room Search & Availability Check
+ * Use Case 5 - Booking Request (First-Come-First-Served)
  *
  * @author Chirag Patnaik
  * @version 1.0
@@ -34,7 +34,22 @@ public class BookMyStayApp {
         // Create Search Service
         RoomSearchService searchService = new RoomSearchService();
 
+        BookingQueue bookingQueue = new BookingQueue();
+        
+
         // Search Available Rooms
         searchService.searchAvailableRooms(rooms, inventory);
+        System.out.println();
+
+bookingQueue.addBookingRequest(
+        new Reservation("Ramsha", "Single Room"));
+
+bookingQueue.addBookingRequest(
+        new Reservation("Adtiya", "Double Room"));
+
+bookingQueue.addBookingRequest(
+        new Reservation("Sneha", "Suite Room"));
+
+bookingQueue.displayBookingRequests();
     }
 }
