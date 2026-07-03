@@ -21,13 +21,19 @@ public class BookingService {
             RoomInventory inventory,
             BookingHistory history) {
 
+        BookingValidator validator = new BookingValidator();
+
         while (!bookingQueue.isEmpty()) {
 
             Reservation reservation = bookingQueue.poll();
 
-            String roomType = reservation.getRoomType();
+            try {
 
-            if (inventory.getAvailability(roomType) > 0) {
+                validator.validateReservation(
+                        reservation,
+                        inventory);
+
+                String roomType = reservation.getRoomType();
 
                 String roomId =
                         roomType.substring(0, 2).toUpperCase()
@@ -52,13 +58,12 @@ public class BookingService {
                 System.out.println("\n========== BOOKING CONFIRMED ==========");
                 System.out.println(reservation);
 
-            } else {
+            } catch (InvalidBookingException e) {
 
                 reservation.setStatus("Failed");
 
                 System.out.println("\nBooking Failed!");
-                System.out.println("No rooms available for "
-                        + roomType);
+                System.out.println(e.getMessage());
             }
         }
     }
