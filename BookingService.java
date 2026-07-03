@@ -16,7 +16,7 @@ public class BookingService {
         reservationCounter = 1;
     }
 
-    public void processBookings(
+    public synchronized void processBookings(
             Queue<Reservation> bookingQueue,
             RoomInventory inventory,
             BookingHistory history) {
@@ -55,14 +55,21 @@ public class BookingService {
 
                 history.addReservation(reservation);
 
-                System.out.println("\n========== BOOKING CONFIRMED ==========");
+                System.out.println(
+                        "\nThread : "
+                                + Thread.currentThread().getName());
+
+                System.out.println(
+                        "Booking Confirmed");
+
                 System.out.println(reservation);
 
-            } catch (InvalidBookingException e) {
+            }
+
+            catch (InvalidBookingException e) {
 
                 reservation.setStatus("Failed");
 
-                System.out.println("\nBooking Failed!");
                 System.out.println(e.getMessage());
             }
         }

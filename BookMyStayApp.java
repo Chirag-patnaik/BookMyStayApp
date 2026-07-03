@@ -2,11 +2,8 @@
  * Book My Stay App
  * Hotel Booking Management System
  *
- * This application is developed incrementally
- * through Use Case 1 to Use Case 12.
- *
  * Current Implementation:
- * Use Case 10 - Booking Cancellation & Inventory Rollback
+ * Use Case 12 - Data Persistence & System Recovery
  *
  * @author Chirag Patnaik
  * @version 1.0
@@ -20,18 +17,14 @@ public class BookMyStayApp {
         System.out.println("       BOOK MY STAY APP");
         System.out.println("==================================");
 
-        // Create Room Objects
         Room single = new SingleRoom();
         Room doubleroom = new DoubleRoom();
         Room suite = new SuiteRoom();
 
-        // Store Rooms
-        Room[] rooms = { single, doubleroom, suite };
+        Room[] rooms = {single, doubleroom, suite};
 
-        // Inventory
         RoomInventory inventory = new RoomInventory();
 
-        // Services
         RoomSearchService searchService = new RoomSearchService();
         BookingQueue bookingQueue = new BookingQueue();
         BookingHistory bookingHistory = new BookingHistory();
@@ -39,8 +32,9 @@ public class BookMyStayApp {
         BookingReportService reportService = new BookingReportService();
         AddOnServiceManager serviceManager = new AddOnServiceManager();
         CancellationService cancellationService = new CancellationService();
+        PersistenceService persistenceService = new PersistenceService();
 
-        // Display Rooms
+        // Display Available Rooms
         searchService.searchAvailableRooms(rooms, inventory);
 
         System.out.println();
@@ -55,21 +49,40 @@ public class BookMyStayApp {
         bookingQueue.addBookingRequest(
                 new Reservation("Sneha", "Suite Room"));
 
-        System.out.println();
-
         bookingQueue.displayBookingRequests();
 
         System.out.println();
 
-        // Process Bookings
-        bookingService.processBookings(
-                bookingQueue.getBookingQueue(),
-                inventory,
-                bookingHistory);
+        // Concurrent Booking
+        ConcurrentBookingProcessor thread1 =
+                new ConcurrentBookingProcessor(
+                        bookingQueue,
+                        bookingService,
+                        inventory,
+                        bookingHistory);
+
+        ConcurrentBookingProcessor thread2 =
+                new ConcurrentBookingProcessor(
+                        bookingQueue,
+                        bookingService,
+                        inventory,
+                        bookingHistory);
+
+        thread1.setName("Guest-Thread-1");
+        thread2.setName("Guest-Thread-2");
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         System.out.println();
 
-        // Inventory After Booking
         inventory.displayInventory();
 
         // Add-On Services
@@ -89,10 +102,10 @@ public class BookMyStayApp {
 
         serviceManager.displayServices();
 
-        // Booking History
+        // Booking Report
         reportService.displayReport(bookingHistory);
 
-        // Cancel Reservation RES2
+        // Cancel Reservation
         Reservation reservation =
                 bookingHistory.getReservation("RES2");
 
@@ -105,10 +118,14 @@ public class BookMyStayApp {
 
         System.out.println();
 
-        // Updated Inventory After Cancellation
         inventory.displayInventory();
 
-        // Released Room IDs
         cancellationService.displayReleasedRooms();
+
+        // Save Data
+        persistenceService.saveBookings(bookingHistory);
+
+        // Recover Data
+        persistenceService.loadBookings();
     }
 }
