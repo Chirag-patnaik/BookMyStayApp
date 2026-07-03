@@ -30,4 +30,13 @@ public class RoomInventory {
             System.out.println(room + " : " + inventory.get(room));
         }
     }
+
+public void decreaseAvailability(String roomType) {
+
+        int available = inventory.get(roomType);
+
+        if (available > 0) {
+            inventory.put(roomType, available - 1);
+        }
+    }
 }

@@ -6,7 +6,7 @@
  * through Use Case 1 to Use Case 12.
  *
  * Current Implementation:
- * Use Case 5 - Booking Request (First-Come-First-Served)
+ * Use Case 6 - Reservation Confirmation & Room Allocation
  *
  * @author Chirag Patnaik
  * @version 1.0
@@ -25,31 +25,50 @@ public class BookMyStayApp {
         Room doubleroom = new DoubleRoom();
         Room suite = new SuiteRoom();
 
-        // Store all rooms in an array
+        // Store Rooms
         Room[] rooms = {single, doubleroom, suite};
 
-        // Create Inventory
+        // Inventory
         RoomInventory inventory = new RoomInventory();
 
-        // Create Search Service
+        // Search Service
         RoomSearchService searchService = new RoomSearchService();
 
+        // Booking Queue
         BookingQueue bookingQueue = new BookingQueue();
-        
 
-        // Search Available Rooms
+        // Booking Service
+        BookingService bookingService = new BookingService();
+
+        // Display Available Rooms
         searchService.searchAvailableRooms(rooms, inventory);
+
         System.out.println();
 
-bookingQueue.addBookingRequest(
-        new Reservation("Ramsha", "Single Room"));
+        // Booking Requests
+        bookingQueue.addBookingRequest(
+                new Reservation("Ramsha", "Single Room"));
 
-bookingQueue.addBookingRequest(
-        new Reservation("Adtiya", "Double Room"));
+        bookingQueue.addBookingRequest(
+                new Reservation("Adtiya", "Double Room"));
 
-bookingQueue.addBookingRequest(
-        new Reservation("Sneha", "Suite Room"));
+        bookingQueue.addBookingRequest(
+                new Reservation("Sneha", "Suite Room"));
 
-bookingQueue.displayBookingRequests();
+        System.out.println();
+
+        bookingQueue.displayBookingRequests();
+
+        System.out.println();
+
+        // Process Bookings
+        bookingService.processBookings(
+                bookingQueue.getBookingQueue(),
+                inventory);
+
+        System.out.println();
+
+        // Updated Inventory
+        inventory.displayInventory();
     }
 }
