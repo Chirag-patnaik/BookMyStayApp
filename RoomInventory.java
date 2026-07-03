@@ -21,6 +21,22 @@ public class RoomInventory {
         inventory.put(roomType, count);
     }
 
+    public void decreaseAvailability(String roomType) {
+
+        int available = inventory.get(roomType);
+
+        if (available > 0) {
+            inventory.put(roomType, available - 1);
+        }
+    }
+
+    public void increaseAvailability(String roomType) {
+
+        inventory.put(
+                roomType,
+                inventory.get(roomType) + 1);
+    }
+
     public void displayInventory() {
 
         System.out.println("Current Room Inventory");
@@ -28,15 +44,6 @@ public class RoomInventory {
 
         for (String room : inventory.keySet()) {
             System.out.println(room + " : " + inventory.get(room));
-        }
-    }
-
-public void decreaseAvailability(String roomType) {
-
-        int available = inventory.get(roomType);
-
-        if (available > 0) {
-            inventory.put(roomType, available - 1);
         }
     }
 }

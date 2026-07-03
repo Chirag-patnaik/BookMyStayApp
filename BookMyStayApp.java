@@ -6,7 +6,7 @@
  * through Use Case 1 to Use Case 12.
  *
  * Current Implementation:
- * Use Case 8 - Booking History & Reporting
+ * Use Case 10 - Booking Cancellation & Inventory Rollback
  *
  * @author Chirag Patnaik
  * @version 1.0
@@ -26,30 +26,21 @@ public class BookMyStayApp {
         Room suite = new SuiteRoom();
 
         // Store Rooms
-        Room[] rooms = {single, doubleroom, suite};
+        Room[] rooms = { single, doubleroom, suite };
 
         // Inventory
         RoomInventory inventory = new RoomInventory();
 
-        // Search Service
+        // Services
         RoomSearchService searchService = new RoomSearchService();
-
-        // Booking Queue
         BookingQueue bookingQueue = new BookingQueue();
-
-        // Booking History
         BookingHistory bookingHistory = new BookingHistory();
-
-        // Booking Service
         BookingService bookingService = new BookingService();
-
-        // Booking Report Service
         BookingReportService reportService = new BookingReportService();
-
-        // Add-On Service Manager
         AddOnServiceManager serviceManager = new AddOnServiceManager();
+        CancellationService cancellationService = new CancellationService();
 
-        // Display Available Rooms
+        // Display Rooms
         searchService.searchAvailableRooms(rooms, inventory);
 
         System.out.println();
@@ -66,7 +57,6 @@ public class BookMyStayApp {
 
         System.out.println();
 
-        // Display Queue
         bookingQueue.displayBookingRequests();
 
         System.out.println();
@@ -79,7 +69,7 @@ public class BookMyStayApp {
 
         System.out.println();
 
-        // Display Updated Inventory
+        // Inventory After Booking
         inventory.displayInventory();
 
         // Add-On Services
@@ -97,10 +87,28 @@ public class BookMyStayApp {
 
         System.out.println();
 
-        // Display Services
         serviceManager.displayServices();
 
-        // Booking History Report
+        // Booking History
         reportService.displayReport(bookingHistory);
+
+        // Cancel Reservation RES2
+        Reservation reservation =
+                bookingHistory.getReservation("RES2");
+
+        if (reservation != null) {
+
+            cancellationService.cancelReservation(
+                    reservation,
+                    inventory);
+        }
+
+        System.out.println();
+
+        // Updated Inventory After Cancellation
+        inventory.displayInventory();
+
+        // Released Room IDs
+        cancellationService.displayReleasedRooms();
     }
 }

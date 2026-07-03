@@ -19,4 +19,18 @@ public class BookingHistory {
 
         return bookingHistory;
     }
+
+    public Reservation getReservation(String reservationId) {
+
+        for (Reservation reservation : bookingHistory) {
+
+            if (reservation.getReservationId()
+                    .equals(reservationId)) {
+
+                return reservation;
+            }
+        }
+
+        return null;
+    }
 }
