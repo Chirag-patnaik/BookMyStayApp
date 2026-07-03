@@ -22,21 +22,24 @@ public class BookMyStayApp {
         Room doubleroom = new DoubleRoom();
         Room suite = new SuiteRoom();
 
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
+RoomInventory inventory = new RoomInventory();
 
         single.displayRoomDetails();
-        System.out.println("Available : " + singleAvailable);
+    System.out.println("Available : " + inventory.getAvailability(single.getRoomType()));   
 
         System.out.println();
 
         doubleroom.displayRoomDetails();
-        System.out.println("Available : " + doubleAvailable);
+System.out.println("Available : " + inventory.getAvailability(doubleroom.getRoomType()));
 
         System.out.println();
 
         suite.displayRoomDetails();
-        System.out.println("Available : " + suiteAvailable);
+System.out.println("Available : " + inventory.getAvailability(suite.getRoomType()));
+
+System.out.println();
+
+inventory.displayInventory();
+
     }
 }
