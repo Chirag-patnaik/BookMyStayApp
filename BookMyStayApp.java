@@ -6,7 +6,7 @@
  * through Use Case 1 to Use Case 12.
  *
  * Current Implementation:
- * Use Case 7 - Add-On Service Selection
+ * Use Case 8 - Booking History & Reporting
  *
  * @author Chirag Patnaik
  * @version 1.0
@@ -37,8 +37,14 @@ public class BookMyStayApp {
         // Booking Queue
         BookingQueue bookingQueue = new BookingQueue();
 
+        // Booking History
+        BookingHistory bookingHistory = new BookingHistory();
+
         // Booking Service
         BookingService bookingService = new BookingService();
+
+        // Booking Report Service
+        BookingReportService reportService = new BookingReportService();
 
         // Add-On Service Manager
         AddOnServiceManager serviceManager = new AddOnServiceManager();
@@ -60,7 +66,7 @@ public class BookMyStayApp {
 
         System.out.println();
 
-        // Display Booking Queue
+        // Display Queue
         bookingQueue.displayBookingRequests();
 
         System.out.println();
@@ -68,7 +74,8 @@ public class BookMyStayApp {
         // Process Bookings
         bookingService.processBookings(
                 bookingQueue.getBookingQueue(),
-                inventory);
+                inventory,
+                bookingHistory);
 
         System.out.println();
 
@@ -77,20 +84,23 @@ public class BookMyStayApp {
 
         // Add-On Services
         serviceManager.addService(
-                "SI1",
+                "RES1",
                 new AddOnService("Breakfast", 500));
 
         serviceManager.addService(
-                "SI1",
+                "RES1",
                 new AddOnService("Airport Pickup", 1200));
 
         serviceManager.addService(
-                "DO2",
+                "RES2",
                 new AddOnService("Spa", 2000));
 
         System.out.println();
 
-        // Display Add-On Services
+        // Display Services
         serviceManager.displayServices();
+
+        // Booking History Report
+        reportService.displayReport(bookingHistory);
     }
 }

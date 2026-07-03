@@ -7,15 +7,19 @@ public class BookingService {
 
     private HashMap<String, Set<String>> allocatedRooms;
     private int roomCounter;
+    private int reservationCounter;
 
     public BookingService() {
 
         allocatedRooms = new HashMap<>();
         roomCounter = 1;
+        reservationCounter = 1;
     }
 
-    public void processBookings(Queue<Reservation> bookingQueue,
-                                RoomInventory inventory) {
+    public void processBookings(
+            Queue<Reservation> bookingQueue,
+            RoomInventory inventory,
+            BookingHistory history) {
 
         while (!bookingQueue.isEmpty()) {
 
@@ -25,23 +29,36 @@ public class BookingService {
 
             if (inventory.getAvailability(roomType) > 0) {
 
-                String roomId = roomType.substring(0, 2).toUpperCase() + roomCounter++;
+                String roomId =
+                        roomType.substring(0, 2).toUpperCase()
+                                + roomCounter++;
+
+                String reservationId =
+                        "RES" + reservationCounter++;
 
                 allocatedRooms
-                        .computeIfAbsent(roomType, k -> new HashSet<>())
+                        .computeIfAbsent(roomType,
+                                k -> new HashSet<>())
                         .add(roomId);
 
                 inventory.decreaseAvailability(roomType);
 
+                reservation.setReservationId(reservationId);
+                reservation.setRoomId(roomId);
+                reservation.setStatus("Confirmed");
+
+                history.addReservation(reservation);
+
                 System.out.println("\n========== BOOKING CONFIRMED ==========");
-                System.out.println("Guest      : " + reservation.getGuestName());
-                System.out.println("Room Type  : " + roomType);
-                System.out.println("Room ID    : " + roomId);
+                System.out.println(reservation);
 
             } else {
 
+                reservation.setStatus("Failed");
+
                 System.out.println("\nBooking Failed!");
-                System.out.println("No rooms available for " + roomType);
+                System.out.println("No rooms available for "
+                        + roomType);
             }
         }
     }
