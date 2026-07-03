@@ -6,7 +6,7 @@
  * through Use Case 1 to Use Case 12.
  *
  * Current Implementation:
- * Use Case 6 - Reservation Confirmation & Room Allocation
+ * Use Case 7 - Add-On Service Selection
  *
  * @author Chirag Patnaik
  * @version 1.0
@@ -40,6 +40,9 @@ public class BookMyStayApp {
         // Booking Service
         BookingService bookingService = new BookingService();
 
+        // Add-On Service Manager
+        AddOnServiceManager serviceManager = new AddOnServiceManager();
+
         // Display Available Rooms
         searchService.searchAvailableRooms(rooms, inventory);
 
@@ -57,6 +60,7 @@ public class BookMyStayApp {
 
         System.out.println();
 
+        // Display Booking Queue
         bookingQueue.displayBookingRequests();
 
         System.out.println();
@@ -68,7 +72,25 @@ public class BookMyStayApp {
 
         System.out.println();
 
-        // Updated Inventory
+        // Display Updated Inventory
         inventory.displayInventory();
+
+        // Add-On Services
+        serviceManager.addService(
+                "SI1",
+                new AddOnService("Breakfast", 500));
+
+        serviceManager.addService(
+                "SI1",
+                new AddOnService("Airport Pickup", 1200));
+
+        serviceManager.addService(
+                "DO2",
+                new AddOnService("Spa", 2000));
+
+        System.out.println();
+
+        // Display Add-On Services
+        serviceManager.displayServices();
     }
 }
