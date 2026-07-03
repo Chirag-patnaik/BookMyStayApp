@@ -1,10 +1,12 @@
 /**
- * Use Case 2
  * Book My Stay App
  * Hotel Booking Management System
  *
- * Demonstrates room creation using
- * abstraction, inheritance and polymorphism.
+ * This application is developed incrementally
+ * through Use Case 1 to Use Case 12.
+ *
+ * Current Implementation:
+ * Use Case 4 - Room Search & Availability Check
  *
  * @author Chirag Patnaik
  * @version 1.0
@@ -18,28 +20,21 @@ public class BookMyStayApp {
         System.out.println("       BOOK MY STAY APP");
         System.out.println("==================================");
 
+        // Create Room Objects
         Room single = new SingleRoom();
         Room doubleroom = new DoubleRoom();
         Room suite = new SuiteRoom();
 
-RoomInventory inventory = new RoomInventory();
+        // Store all rooms in an array
+        Room[] rooms = {single, doubleroom, suite};
 
-        single.displayRoomDetails();
-    System.out.println("Available : " + inventory.getAvailability(single.getRoomType()));   
+        // Create Inventory
+        RoomInventory inventory = new RoomInventory();
 
-        System.out.println();
+        // Create Search Service
+        RoomSearchService searchService = new RoomSearchService();
 
-        doubleroom.displayRoomDetails();
-System.out.println("Available : " + inventory.getAvailability(doubleroom.getRoomType()));
-
-        System.out.println();
-
-        suite.displayRoomDetails();
-System.out.println("Available : " + inventory.getAvailability(suite.getRoomType()));
-
-System.out.println();
-
-inventory.displayInventory();
-
+        // Search Available Rooms
+        searchService.searchAvailableRooms(rooms, inventory);
     }
 }
