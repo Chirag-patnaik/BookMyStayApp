@@ -2,7 +2,7 @@
 
 Hotel Booking Management System
 
-Overview
+
 Book My Stay App is a console-based Hotel Booking Management System developed using Core Java and Data Structures.
 The project demonstrates how various data structures and object-oriented programming concepts can be applied to solve real-world hotel booking problems.
 
